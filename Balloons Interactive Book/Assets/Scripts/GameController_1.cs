@@ -12,36 +12,79 @@ public class GameController_1 : MonoBehaviour
     public List<GameObject> PosList;
     public List<GameObject> Blns;
     public List<GameObject> Btns;
-    int counter = 3;
+    public List<int> RandomNums;
 
 	void Start () {
         // Timer shenaxva , shemdegi ganaxlebistvis
         OldTimer = Timer;
 
-        //int Jami = Random.Range(1, 10);
-        //int pirveli = Random.Range(0, Jami);
-        //int meore = Jami - pirveli;
-
-        //print(pirveli + " + " + meore + " = " + Jami);
-
 	}
 
+
+    void GenerateBtnNumbers ()
+    {
+
+        for (int i = 0; i < Btns.Count - 1; i++)
+        {
+            int randomToAdd = Random.Range(GlobalParams.minSum, GlobalParams.maxSum);
+            if (randomToAdd != GlobalParams.CorrectAnswer)
+            {
+                RandomNums.Add(randomToAdd);
+            }
+            else
+            {
+                RandomNums.Add(randomToAdd+1);
+            }
+        }
+        RandomNums.Add(GlobalParams.CorrectAnswer);
+        RandomNums.Shuffle();
+
+        for (int i = 0; i < Btns.Count; i++)
+        {
+            Btns[i].transform.GetChild(0).GetComponent<Text>().text = RandomNums[i].ToString();
+        }
+
+
+    }
 	
 	void Update () {
-
-        if (counter <= 0) return;
 
         Timer -= Time.deltaTime;
         if (Timer<=0)
         {
-            counter--;
-            Instantiate(Blns[Random.Range(0,Blns.Count)], PosList[Random.Range(0,PosList.Count)].transform.position, Quaternion.identity);
+            // klons rom mivcdet vaqcevt gameObject ad 
+            GameObject InstanceBln = Instantiate(Blns[Random.Range(0,Blns.Count)], PosList[Random.Range(0,PosList.Count)].transform.position, Quaternion.identity) as GameObject;
+            
+
+            if (!GlobalParams.WithExample)
+            {
+                // mashi gamovidzaxot  magalitiani bushti.
+                InstanceBln.GetComponent<BallScript>().showExample();
+                GenerateBtnNumbers();
+                GlobalParams.BlnWithExample = InstanceBln;
+            }
             Timer = OldTimer;
         }
 	}
 
-    //public void PrintName(Button btn)
-    //{
-    //    print(btn.transform.GetChild(0).gameObject.GetComponent<Text>().text);
-    //}
+
+
+}
+
+
+static class MyExtensions
+{
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
 }
