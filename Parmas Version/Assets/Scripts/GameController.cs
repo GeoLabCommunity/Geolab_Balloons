@@ -21,28 +21,43 @@ public class GameController : MonoBehaviour {
         }
 
     void GenerateBtnsNumbers ()
-    {
-        RandomNums.Clear();
+    {   
+  
 
-        for (int i = 0; i < Btns.Count - 1; i++)
-        {
-            int randomToAdd = Random.Range(GlobalParams.MinSum, GlobalParams.MaxSum);
-            if (randomToAdd != GlobalParams.CorrectAnsw)
+        List<int> numbers = new List<int>();
+
+        // marto es shevcvalot diapazonistvis (11 is nacvlad unda chavcerot stagebis 6, 10 , 15 , 20)
+        for (int i = 0; i < 11; i++) {
+            if (GlobalParams.CorrectAnsw!=i)
             {
-                RandomNums.Add(randomToAdd);
+                numbers.Add(i);
             }
-            else
-            {
-                RandomNums.Add(randomToAdd + 1);
-            }
+            
         }
-        RandomNums.Add(GlobalParams.CorrectAnsw);
+        List<int> randomNumbers = new List<int>();
+        
+        for (int i = 0; i < 5; i++) {
+            int  thisNumber = Random.Range(0, numbers.Count);
+            randomNumbers.Add(numbers[thisNumber]);
+            numbers.RemoveAt(thisNumber);
+        }
+        randomNumbers.Add(GlobalParams.CorrectAnsw);
+        
+        for (int i = 0; i < randomNumbers.Count; i++)
+        {
+            print(randomNumbers[i]);
+        }
+        
 
-        RandomNums.Shuffle();
+
+
+
+
+
 
         for (int i = 0; i < Btns.Count; i++)
         {
-            Btns[i].transform.GetChild(0).GetComponent<Text>().text = RandomNums[i].ToString();
+            Btns[i].transform.GetChild(0).GetComponent<Text>().text = randomNumbers[i].ToString();
         }
     }
 	void Update () {
