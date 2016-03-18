@@ -24,6 +24,7 @@ public class GameController_1 : MonoBehaviour
     void GenerateBtnNumbers ()
     {
 
+        RandomNums.Clear();
         for (int i = 0; i < Btns.Count - 1; i++)
         {
             int randomToAdd = Random.Range(GlobalParams.minSum, GlobalParams.maxSum);

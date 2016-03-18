@@ -9,7 +9,8 @@ public class BtnController : MonoBehaviour {
         if (btnText.text == GlobalParams.CorrectAnswer.ToString())
         {
             print("Gaxetqe bushti");
-            GlobalParams.BlnWithExample.GetComponent<BallScript>().KillMe();
+            if (GlobalParams.BlnWithExample!=null)
+                GlobalParams.BlnWithExample.GetComponent<BallScript>().KillMe();
         }
     }
 }
