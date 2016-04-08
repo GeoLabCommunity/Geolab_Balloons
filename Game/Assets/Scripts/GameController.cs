@@ -3,25 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+
 public class GameController : MonoBehaviour
 {
 
     public enum GameStates
     {
-        Playng,
+        Playing,
         GameOver,
         GamePaused
     }
 
-    GameStates GameState;
-     float timer;
+    public static GameStates GameState;
+    float timer;
     float OldTimer;
     
     public List<GameObject> Blns;
     public List<GameObject> Btns;
     public List<int> RandomNums;
     public GameObject Gameover_Panel;
-
+    public GameObject Level_Panel;
     public List<GameObject> LevelList;
     int[] BlnArr = { -7, -5, -3,  -1,  1,  3, 5,  7 };
     int BlnArrayIndex;
@@ -30,10 +31,8 @@ public class GameController : MonoBehaviour
         InitLevel();
         timer = GlobalParams.SpawnRate;
         OldTimer = timer;
-        print(timer);
-        print("old timer: " + OldTimer);
-
-        GameState = GameStates.Playng;
+        timer = 0;
+        GameState = GameStates.Playing;
 
         BlnArr.Shuffle();
 
@@ -42,11 +41,19 @@ public class GameController : MonoBehaviour
     void InitLevel()
     {
         LevelList[0].gameObject.GetComponent<LevelScript>().ActivateLevel();
+        
+    }
+
+    public void LoadNextLevel ()
+    {
+        print("asdasdas");
+        Level_Panel.SetActive(false);
+       GameController.GameState =  GameStates.Playing;
+         LevelList[GlobalParams.CurranteLevel-1].gameObject.GetComponent<LevelScript>().ActivateLevel();
     }
 
     void GenerateBtnsNumbers()
     {
-
 
         List<int> numbers = new List<int>();
 
@@ -77,18 +84,33 @@ public class GameController : MonoBehaviour
     }
     void Update()
     {
+        print(GameState);
         if (GameState == GameStates.GameOver) return;
+        if (GameState == GameStates.GamePaused) return;
+
+        switch (GlobalParams.Score)
+        {
+            case 1:
+                AskForNextLevel(2);
+                break;
+            case 3:
+                AskForNextLevel(3);
+                break;
+            case 5:
+                AskForNextLevel(4);
+                break;
+        }
 
         timer -= Time.deltaTime;
+       
         if (timer <= 0)
         {
-         
+
             //კლონს რომ მივწვდეთ, ვაქცევთ "GameObject"-ად.
             if (BlnArrayIndex == BlnArr.Length-1)
             {
                 BlnArr.Shuffle();
                 BlnArrayIndex = 0;
-                print("shuffli gaaketa");
             }
             else
                 BlnArrayIndex++;
@@ -98,7 +120,7 @@ public class GameController : MonoBehaviour
             if (!GlobalParams.WithExample)
             {
                 //მაშინ გამოვიძახოთ მაგალითიანი ბუშტი.
-                InstanceBln.GetComponent<BallScript>().showExample();
+                InstanceBln.GetComponent<BallScript>().ShowExample(Random.Range(0,2));
                 GenerateBtnsNumbers();
                 GlobalParams.BlnWithExample = InstanceBln;
                 
@@ -115,6 +137,15 @@ public class GameController : MonoBehaviour
         
 
     }
+
+    private void AskForNextLevel(int level)
+    {
+        GlobalParams.Score++;
+        GameState = GameStates.GamePaused;
+        Level_Panel.SetActive(true);
+        Level_Panel.transform.FindChild("LevelText").gameObject.GetComponent<Text>().text = "ტური: " + level;
+    }
+
 
 }
 

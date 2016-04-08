@@ -17,7 +17,7 @@ public class GlobalParams : MonoBehaviour {
     public static float SpawnRate;
 
 
-    public static int curranteLevel;
+    public static int CurranteLevel;
         
 	
 	void Start () {

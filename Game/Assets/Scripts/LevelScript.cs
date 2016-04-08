@@ -9,6 +9,7 @@ public class LevelScript : MonoBehaviour {
     public float minSpeed = 1;
     public float maxSpeed = 5;
     public float SpawnRate = 0.5f;
+    public int MaxScore = 10;
 	
 	void Start () {
 	
@@ -16,13 +17,12 @@ public class LevelScript : MonoBehaviour {
 	
 	public void ActivateLevel()
     {
-        GlobalParams.curranteLevel = Level;
+        GlobalParams.CurranteLevel = Level;
         GlobalParams.MinSum = Min;
         GlobalParams.MaxSum = Max;
         GlobalParams.minSpeed = minSpeed;
         GlobalParams.maxSpeed = maxSpeed;
         GlobalParams.SpawnRate = SpawnRate;
-        print("agia magi" +GlobalParams.SpawnRate);
     }
 
 	void Update () {

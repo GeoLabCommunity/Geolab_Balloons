@@ -16,8 +16,8 @@ public class MenyBtn_Controller : MonoBehaviour {
 
     void Update()
     {
-        if (GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.x > -9 && GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.x < 9)
-        { GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position = new Vector2(GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.x + 1, GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.y); }
+        //if (GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.x > -9 && GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.x < 9)
+        //{ GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position = new Vector2(GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.x + 1, GameObject.FindGameObjectWithTag("Clouds").gameObject.transform.position.y); }
 
 
     }

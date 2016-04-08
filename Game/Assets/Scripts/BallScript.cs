@@ -10,23 +10,37 @@ public class BallScript : MonoBehaviour {
         Speed = Random.Range(GlobalParams.minSpeed, GlobalParams.maxSpeed);
     }
        
-        public void showExample()
+    // tu a == 1 mashin gaakete jami, tu a ==  0 mashin gaakete gamokleba
+        public void ShowExample(int a = 1)
        {
+
         gameObject.name = "WithExample";
         GlobalParams.WithExample = true;
+
 
         int jami = Random.Range(GlobalParams.MinSum, GlobalParams.MaxSum);
         GlobalParams.CorrectAnsw = jami;
         int pirveli = Random.Range(0, jami);
         int meore = jami - pirveli;
-        string magaliti = pirveli + "+" + meore;
+        string magaliti = "umagalitoa";
+        if (a == 1)
+        {
+            magaliti = pirveli + "+" + meore;
+        }
+        else if (a==0)
+        {
+            magaliti = jami + " - " + pirveli;
+            GlobalParams.CorrectAnsw = meore;
+        }
+
 
         gameObject.transform.GetChild(0).gameObject.GetComponent<TextMesh>().text = magaliti;
 
     }
+
+    
    
 	void Update () {
-
         gameObject.transform.Translate(new Vector2(0, 1) * Speed);
 	
 	}
