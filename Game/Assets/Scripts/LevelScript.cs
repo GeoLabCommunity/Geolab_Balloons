@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LevelScript : MonoBehaviour {
 
-    public int Level = 0;
+    public int LevelN = 0;
     public int Min = 0;
     public int Max = 6;
     public float minSpeed = 1;
@@ -17,12 +17,13 @@ public class LevelScript : MonoBehaviour {
 	
 	public void ActivateLevel()
     {
-        GlobalParams.CurranteLevel = Level;
+        GlobalParams.CurranteLevel = LevelN;
         GlobalParams.MinSum = Min;
         GlobalParams.MaxSum = Max;
         GlobalParams.minSpeed = minSpeed;
         GlobalParams.maxSpeed = maxSpeed;
         GlobalParams.SpawnRate = SpawnRate;
+        print("Levl is : " + LevelN);
     }
 
 	void Update () {

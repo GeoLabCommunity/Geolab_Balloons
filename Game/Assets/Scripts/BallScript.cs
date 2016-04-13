@@ -51,6 +51,7 @@ public class BallScript : MonoBehaviour {
         {
           GlobalParams.WithExample = false;
           GlobalParams.Passedblns++;
+
         }
         
         Destroy(gameObject);

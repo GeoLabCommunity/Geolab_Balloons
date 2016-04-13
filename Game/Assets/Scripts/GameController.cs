@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
     public GameObject Gameover_Panel;
     public GameObject Level_Panel;
     public List<GameObject> LevelList;
+    public GameObject setLifesGO;
+    
     int[] BlnArr = { -7, -5, -3,  -1,  1,  3, 5,  7 };
     int BlnArrayIndex;
     void Start()
@@ -35,7 +37,6 @@ public class GameController : MonoBehaviour
         GameState = GameStates.Playing;
 
         BlnArr.Shuffle();
-
     }
 
     void InitLevel()
@@ -48,8 +49,8 @@ public class GameController : MonoBehaviour
     {
         print("asdasdas");
         Level_Panel.SetActive(false);
-       GameController.GameState =  GameStates.Playing;
-         LevelList[GlobalParams.CurranteLevel-1].gameObject.GetComponent<LevelScript>().ActivateLevel();
+        GameState =  GameStates.Playing;
+        LevelList[GlobalParams.CurranteLevel].gameObject.GetComponent<LevelScript>().ActivateLevel();
     }
 
     void GenerateBtnsNumbers()
@@ -84,19 +85,18 @@ public class GameController : MonoBehaviour
     }
     void Update()
     {
-        print(GameState);
         if (GameState == GameStates.GameOver) return;
         if (GameState == GameStates.GamePaused) return;
 
         switch (GlobalParams.Score)
         {
-            case 1:
+            case 5:
                 AskForNextLevel(2);
                 break;
-            case 3:
+            case 10:
                 AskForNextLevel(3);
                 break;
-            case 5:
+            case 15:
                 AskForNextLevel(4);
                 break;
         }
@@ -144,6 +144,14 @@ public class GameController : MonoBehaviour
         GameState = GameStates.GamePaused;
         Level_Panel.SetActive(true);
         Level_Panel.transform.FindChild("LevelText").gameObject.GetComponent<Text>().text = "ტური: " + level;
+    }
+
+
+    public static void KillLife()
+    {
+       // if (LifesGO.transform.childCount == 0) return;
+        //Destroy( LifesGO.transform.GetChild(0).gameObject);
+
     }
 
 

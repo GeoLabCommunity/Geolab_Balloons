@@ -12,7 +12,7 @@ public class ScoreTextScript : MonoBehaviour {
 	
 	void Update () {
 
-        textComponent.text = GlobalParams.Score.ToString();
+        textComponent.text = "ქულა: " +GlobalParams.Score.ToString();
 	
 	}
 }
