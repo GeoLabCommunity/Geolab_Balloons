@@ -16,6 +16,8 @@ public class GlobalParams : MonoBehaviour {
     public static float maxSpeed;
     public static float SpawnRate;
 
+	public static int MaxLevelScore;
+
 
     public static int CurranteLevel;
         

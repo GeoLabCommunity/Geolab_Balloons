@@ -14,6 +14,15 @@ public class GameController : MonoBehaviour
         GamePaused
     }
 
+	public enum GameLevels
+	{
+		Level_1 =1,
+		Level_2 =2,
+		Level_3 =3,
+		Level_4 =4,
+		Level_5 =5
+	}
+	public static GameLevels GameLevel;
     public static GameStates GameState;
     float timer;
     float OldTimer;
@@ -24,17 +33,24 @@ public class GameController : MonoBehaviour
     public GameObject Gameover_Panel;
     public GameObject Level_Panel;
     public List<GameObject> LevelList;
-    public GameObject setLifesGO;
+	public GameObject LifeGo;
+	public static GameController instance = null;
     
     int[] BlnArr = { -7, -5, -3,  -1,  1,  3, 5,  7 };
     int BlnArrayIndex;
     void Start()
     {
+		print (GameLevel);
+
+			instance = this;
+		GlobalParams.Passedblns = 0;
+		GameState = GameStates.Playing;
+
+		
         InitLevel();
         timer = GlobalParams.SpawnRate;
         OldTimer = timer;
         timer = 0;
-        GameState = GameStates.Playing;
 
         BlnArr.Shuffle();
     }
@@ -47,7 +63,6 @@ public class GameController : MonoBehaviour
 
     public void LoadNextLevel ()
     {
-        print("asdasdas");
         Level_Panel.SetActive(false);
         GameState =  GameStates.Playing;
         LevelList[GlobalParams.CurranteLevel].gameObject.GetComponent<LevelScript>().ActivateLevel();
@@ -90,13 +105,16 @@ public class GameController : MonoBehaviour
 
         switch (GlobalParams.Score)
         {
-            case 5:
+            case 1:
+			if (GameLevel !=GameLevels.Level_1)
                 AskForNextLevel(2);
                 break;
-            case 10:
+            case 2:
+			if (GameLevel !=GameLevels.Level_2)
                 AskForNextLevel(3);
                 break;
             case 15:
+			if (GameLevel !=GameLevels.Level_3)
                 AskForNextLevel(4);
                 break;
         }
@@ -140,17 +158,18 @@ public class GameController : MonoBehaviour
 
     private void AskForNextLevel(int level)
     {
+		//GameLevel= level;
         GlobalParams.Score++;
         GameState = GameStates.GamePaused;
         Level_Panel.SetActive(true);
-        Level_Panel.transform.FindChild("LevelText").gameObject.GetComponent<Text>().text = "ტური: " + level;
+        Level_Panel.transform.FindChild("LevelText").gameObject. GetComponent<Text>().text = "ტური: " + level;
     }
 
 
-    public static void KillLife()
+    public  void KillLife()
     {
        // if (LifesGO.transform.childCount == 0) return;
-        //Destroy( LifesGO.transform.GetChild(0).gameObject);
+		Destroy(GameController.instance.LifeGo.transform.GetChild(0).gameObject);
 
     }
 

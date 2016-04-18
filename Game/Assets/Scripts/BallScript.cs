@@ -4,7 +4,7 @@ using System.Collections;
 public class BallScript : MonoBehaviour {
 
      float Speed;
-
+	bool isPassable = true;
     void Start() {
 
         Speed = Random.Range(GlobalParams.minSpeed, GlobalParams.maxSpeed);
@@ -47,10 +47,11 @@ public class BallScript : MonoBehaviour {
 
    void OnBecameInvisible()
     {
-        if(gameObject.name == "WithExample")
+		if(gameObject.name == "WithExample" && isPassable)
         {
           GlobalParams.WithExample = false;
           GlobalParams.Passedblns++;
+			GameController.instance.KillLife ();
 
         }
         
@@ -59,11 +60,12 @@ public class BallScript : MonoBehaviour {
 
     public void KillMe()
     {
+		isPassable = false;
+
         GetComponent<AudioSource>().Play();
         GlobalParams.Score++;
         gameObject.GetComponent<Animator>().SetTrigger("TriggerBoom");
-        
-
+		GlobalParams.WithExample = false;
 
     }
 

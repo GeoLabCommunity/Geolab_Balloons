@@ -23,6 +23,7 @@ public class LevelScript : MonoBehaviour {
         GlobalParams.minSpeed = minSpeed;
         GlobalParams.maxSpeed = maxSpeed;
         GlobalParams.SpawnRate = SpawnRate;
+		GlobalParams.MaxLevelScore = MaxScore;
         print("Levl is : " + LevelN);
     }
 
