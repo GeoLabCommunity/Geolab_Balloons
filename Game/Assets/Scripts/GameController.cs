@@ -44,8 +44,9 @@ public class GameController : MonoBehaviour
         GameLevel = GameLevels.Level_1;
         instance = this;
 		GlobalParams.Passedblns = 0;
-		GameState = GameStates.Playing;
+        GlobalParams.Score = 0;
 
+        GameState = GameStates.Playing;
 		
         InitLevel();
         timer = GlobalParams.SpawnRate;
