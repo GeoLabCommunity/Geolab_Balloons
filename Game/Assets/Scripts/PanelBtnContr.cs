@@ -7,6 +7,7 @@ public class PanelBtnContr : MonoBehaviour {
     {
         Application.LoadLevel("Menu");
 
-
     }
+
+   
 }

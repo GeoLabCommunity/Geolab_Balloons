@@ -8,9 +8,13 @@ public class BtnsController : MonoBehaviour {
     {
         if (BtnText.text == GlobalParams.CorrectAnsw.ToString())
         {
+            if (GlobalParams.BlnWithExample!=null)
+                GlobalParams.BlnWithExample.GetComponent<BallScript>().KillMe();
 
-            GlobalParams.BlnWithExample.GetComponent<BallScript>().KillMe();
-
+        }
+        else
+        {
+            GameController.instance.KillLife();
         }
             
     }

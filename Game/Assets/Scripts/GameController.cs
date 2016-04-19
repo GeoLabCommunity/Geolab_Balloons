@@ -14,13 +14,14 @@ public class GameController : MonoBehaviour
         GamePaused
     }
 
-	public enum GameLevels
+	public enum GameLevels : byte
 	{
 		Level_1 =1,
 		Level_2 =2,
 		Level_3 =3,
 		Level_4 =4,
-		Level_5 =5
+		Level_5 =5,
+        inf = 0
 	}
 	public static GameLevels GameLevel;
     public static GameStates GameState;
@@ -40,9 +41,8 @@ public class GameController : MonoBehaviour
     int BlnArrayIndex;
     void Start()
     {
-		print (GameLevel);
-
-			instance = this;
+        GameLevel = GameLevels.Level_1;
+        instance = this;
 		GlobalParams.Passedblns = 0;
 		GameState = GameStates.Playing;
 
@@ -63,18 +63,21 @@ public class GameController : MonoBehaviour
 
     public void LoadNextLevel ()
     {
+        isAsking = false;
         Level_Panel.SetActive(false);
         GameState =  GameStates.Playing;
         LevelList[GlobalParams.CurranteLevel].gameObject.GetComponent<LevelScript>().ActivateLevel();
     }
 
+    List<int> randomNumbers = new List<int>();
+    List<int> numbers = new List<int>();
     void GenerateBtnsNumbers()
     {
 
-        List<int> numbers = new List<int>();
-
+        numbers.Clear();
+        randomNumbers.Clear();
         // marto es shevcvalot diapazonistvis (11 is nacvlad unda chavcerot stagebis 6, 10 , 15 , 20)
-        for (int i = GlobalParams.MinSum; i < GlobalParams.MaxSum; i++)
+        for (int i = GlobalParams.MinSum; i <= GlobalParams.MaxSum; i++)
         {
             if (GlobalParams.CorrectAnsw != i)
             {
@@ -82,7 +85,7 @@ public class GameController : MonoBehaviour
             }
 
         }
-        List<int> randomNumbers = new List<int>();
+        
 
         for (int i = 0; i < 5; i++)
         {
@@ -98,26 +101,23 @@ public class GameController : MonoBehaviour
             Btns[i].transform.GetChild(0).GetComponent<Text>().text = randomNumbers[i].ToString();
         }
     }
+
+    bool isAsking = false;
     void Update()
     {
+        if (GameState == GameStates.GameOver && !Gameover_Panel.gameObject.activeInHierarchy)
+        {
+            Gameover_Panel.gameObject.SetActive(true);
+        }
+
         if (GameState == GameStates.GameOver) return;
         if (GameState == GameStates.GamePaused) return;
-
-        switch (GlobalParams.Score)
+        
+        if (GlobalParams.Score == GlobalParams.MaxLevelScore && !isAsking)
         {
-            case 1:
-			if (GameLevel !=GameLevels.Level_1)
-                AskForNextLevel(2);
-                break;
-            case 2:
-			if (GameLevel !=GameLevels.Level_2)
-                AskForNextLevel(3);
-                break;
-            case 15:
-			if (GameLevel !=GameLevels.Level_3)
-                AskForNextLevel(4);
-                break;
+            AskForNextLevel(GlobalParams.CurranteLevel);
         }
+       
 
         timer -= Time.deltaTime;
        
@@ -145,31 +145,31 @@ public class GameController : MonoBehaviour
             }
             timer = OldTimer;
         }
+        if (GlobalParams.Passedblns >= GlobalParams.Maxpassedblns) GameState = GameStates.GameOver;
 
-        if(GameState != GameStates.GameOver && GlobalParams.Passedblns >= GlobalParams.Maxpassedblns)
-        {
-            
-            Gameover_Panel.gameObject.SetActive(true);
-            GameState = GameStates.GameOver;
-        }
-        
 
     }
 
+ 
+
     private void AskForNextLevel(int level)
     {
-		//GameLevel= level;
-        GlobalParams.Score++;
+        isAsking = true;
         GameState = GameStates.GamePaused;
         Level_Panel.SetActive(true);
-        Level_Panel.transform.FindChild("LevelText").gameObject. GetComponent<Text>().text = "ტური: " + level;
+        Level_Panel.transform.FindChild("LevelText").gameObject. GetComponent<Text>().text = "ყოჩაღ შენ წარმატებით გაიარე ტური :" + level;
+        
     }
 
 
     public  void KillLife()
     {
-       // if (LifesGO.transform.childCount == 0) return;
-		Destroy(GameController.instance.LifeGo.transform.GetChild(0).gameObject);
+        if (LifeGo.transform.childCount >= 1)
+		    Destroy(LifeGo.transform.GetChild(0).gameObject);
+        if (LifeGo.transform.childCount == 1)
+        {
+            GameState = GameStates.GameOver;
+        }
 
     }
 
